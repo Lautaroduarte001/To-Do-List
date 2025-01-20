@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <form action="/add" method="POST">
+        <input type="text" name="task" placeholder="Nueva tarea" required>
+        <button type="submit">Agregar</button>
+    </form>
+    <ul>
+        {% for task in tasks %}
+        <li>
+            {{ task[1] }}
+            <!-- Checkbox para actualizar el estado -->
+            <form action="/update_status" method="POST" style="display: inline;">
+                <input type="hidden" name="task_id" value="{{ task[0] }}">
+                <input 
+                    type="checkbox" 
+                    name="task_status" 
+                    onchange="this.form.submit()"
+                    {% if task[2] == 'complete' %} checked {% endif %}
+                >
+            </form>
+            <!-- Botón para eliminar tarea -->
+            <form action="/delete_task" method="POST" style="display: inline;">
+                <button type="submit" name="delete_task" value="{{ task[0] }}">Eliminar tarea</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
