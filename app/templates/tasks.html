@@ -4,33 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
 </head>
 <body>
     <h1>To-Do List</h1>
-    <form action="/add" method="POST">
-        <input type="text" name="task" placeholder="Nueva tarea" required>
-        <button type="submit">Agregar</button>
-    </form>
+        <form action="/add" method="POST" id="add-task-form">
+            <div id="add-new-task-text-container">
+                <input required='' type='text' name="task" placeholder="Nueva Tarea">
+            </div>
+            <div id="add-new-task-button-container">
+                <button type="submit" class="add-button">Agregar</button>
+            </div>
+        </form>
     <ul>
         {% for task in tasks %}
-        <li>
-            {{ task[1] }}
-            <!-- Checkbox para actualizar el estado -->
-            <form action="/update_status" method="POST" style="display: inline;">
-                <input type="hidden" name="task_id" value="{{ task[0] }}">
-                <input 
-                    type="checkbox" 
-                    name="task_status" 
-                    onchange="this.form.submit()"
-                    {% if task[2] == 'complete' %} checked {% endif %}
-                >
-            </form>
-            <!-- Botón para eliminar tarea -->
-            <form action="/delete_task" method="POST" style="display: inline;">
-                <button type="submit" name="delete_task" value="{{ task[0] }}">Eliminar tarea</button>
-            </form>
-        </li>
+        <div class="form-content">
+            <li>
+                <!-- Contenedor del checkbox -->
+                <div class="checkbox-container">
+                    <div class="checkbox-wrapper-3">
+                        <form action="/update_status" method="POST">
+                            <input type="hidden" name="task_id" value="{{ task[0] }}" id="task">
+                            <input 
+                                type="checkbox" 
+                                name="task_status"
+                                id="cbx-{{ task[0] }}"
+                                onchange="this.form.submit()"
+                                {% if task[2] == 'complete' %} checked {% endif %}>
+                            <label for="cbx-{{ task[0] }}" class="toggle"><span></span></label>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Nombre de la tarea -->
+                {{ task[1] }}
+                
+                <!-- Botón para eliminar tarea -->
+                <form action="/delete_task" method="POST">
+                    <button type="submit" name="delete_task" value="{{ task[0] }}" class="delete-button">Eliminar tarea</button>
+                </form>
+            </li>
+        </div>
         {% endfor %}
     </ul>
 </body>
