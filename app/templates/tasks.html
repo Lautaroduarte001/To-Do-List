@@ -24,20 +24,21 @@
         <div class="form-content">
             <li>
                 <!-- Contenedor del checkbox -->
-                <div class="checkbox-container">
-                    <div class="checkbox-wrapper-3">
-                        <form action="/update_status" method="POST">
-                            <input type="hidden" name="task_id" value="{{ task[0] }}" id="task">
-                            <input 
-                                type="checkbox" 
-                                name="task_status"
-                                id="cbx-{{ task[0] }}"
-                                onchange="this.form.submit()"
-                                {% if task[2] == 'complete' %} checked {% endif %}>
-                            <label for="cbx-{{ task[0] }}" class="toggle"><span></span></label>
-                        </form>
+                <form action="/update_status" method="POST">
+                    <input type="hidden" name="task_id" value="{{ task[0] }}"/>
+                
+                    <div class="checkbox-wrapper-33">
+                        <label class="checkbox">
+                            <input class="checkbox__trigger visuallyhidden" type="checkbox" name="task_status" id="{{ task[0] }}"
+                                onchange="this.form.submit()" {% if task[2] == 'complete' %} checked {% endif %}/>
+                            <span class="checkbox__symbol">
+                                <svg aria-hidden="true" class="icon-checkbox" width="28px" height="28px" viewBox="0 0 28 28" version="1" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 14l8 7L24 7"></path>
+                                </svg>
+                            </span>
+                        </label>
                     </div>
-                </div>
+                </form>
                 
                 <!-- Nombre de la tarea -->
                 {{ task[1] }}
